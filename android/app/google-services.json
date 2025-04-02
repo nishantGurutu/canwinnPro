@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "1032846579458",
-    "project_id": "task-maste",
-    "storage_bucket": "task-maste.firebasestorage.app"
+    "project_number": "831175336212",
+    "project_id": "canwinn-pro-efc62",
+    "storage_bucket": "canwinn-pro-efc62.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1032846579458:android:b92c55f8a35a552f9c141b",
+        "mobilesdk_app_id": "1:831175336212:android:a604d5050cc67a5d7de201",
         "android_client_info": {
-          "package_name": "com.cannwin.task_management"
+          "package_name": "com.canwinn.pro"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDOg3jm_zKff9ljs2swk8j7G1gao_UrTnM"
+          "current_key": "AIzaSyAQaBKtMXqncIUWTlTyBkQSwTrNPDLaiio"
         }
       ],
       "services": {

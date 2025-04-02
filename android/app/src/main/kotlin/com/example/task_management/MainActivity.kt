@@ -1,4 +1,4 @@
-package com.cannwin.task_management
+package com.canwinn.pro
 
 import io.flutter.embedding.android.FlutterActivity
 

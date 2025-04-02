@@ -3,7 +3,7 @@ plugins {
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
     id 'com.google.gms.google-services'
-}
+} 
 
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
@@ -12,7 +12,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.cannwin.task_management"
+    namespace = "com.canwinn.pro"
     compileSdk = 35 //flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -28,8 +28,8 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        // applicationId = "com.cannwin.task_management"
-        applicationId = "com.cannwin.task_management"
+        // applicationId = "com.canwinn.pro"
+        applicationId = "com.canwinn.pro"
         minSdk = 21 //flutter.minSdkVersion
         targetSdk = 34
         versionCode = flutter.versionCode
@@ -71,7 +71,7 @@ flutter {
 }
 
 dependencies {
-    implementation platform('com.google.firebase:firebase-bom:33.6.0')
+    implementation platform('com.google.firebase:firebase-bom:33.12.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-messaging:23.2.1' 
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'

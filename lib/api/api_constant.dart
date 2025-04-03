@@ -147,6 +147,10 @@ class ApiConstant {
   static const String overlay_images = "overlay-images";
   static const String notes_important = "notes-important";
   static const String add_user_checkin = "add-user-checkin";
+  static const String add_user_checkout = "add-user-checkout";
   static const String monthly_attendance_summary = "monthly-attendance-summary";
-  static const String get_user_details = "get_user_details";
+  static const String get_user_details = "get-user-details";
+  static const String leavetype_list = "leavetype-list";
+  static const String apply_leave = "apply-leave";
+  static const String leave_list = "leave-list";
 }

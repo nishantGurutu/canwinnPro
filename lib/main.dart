@@ -120,6 +120,8 @@ Future<void> requestPermissions() async {
     Permission.notification,
     Permission.locationWhenInUse,
     Permission.locationAlways,
+    Permission.accessMediaLocation,
+    Permission.location,
     Permission.camera,
   ].request();
 }

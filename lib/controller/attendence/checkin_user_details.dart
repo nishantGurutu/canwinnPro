@@ -361,7 +361,8 @@ class _CheckinUserDetailsState extends State<CheckinUserDetails> {
             latitude,
             longitude,
             attendenceTime,
-            searchText);
+            searchText,
+            File(''));
       } else {
         await attendenceController.attendencePunchout(
             taskController.pickedFile.value,
@@ -369,7 +370,8 @@ class _CheckinUserDetailsState extends State<CheckinUserDetails> {
             latitude,
             longitude,
             attendenceTime,
-            searchText);
+            searchText,
+            File(''));
       }
     } catch (e) {
       print("Error capturing image: $e");

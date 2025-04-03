@@ -24,19 +24,24 @@ class _AttendenceScreenState extends State<AttendenceScreen> {
   @override
   initState() {
     currentDate.value =
-        DateTime(currentDate.value.year, currentDate.value.month - 1, 1);
-    attendenceController.attendenceList();
+        DateTime(currentDate.value.year, currentDate.value.month, 1);
+    attendenceController.attendenceList(
+        month: currentDate.value.month, year: currentDate.value.year);
     super.initState();
   }
 
-  void previousMonth() {
+  void previousMonth() async {
     currentDate.value =
-        DateTime(currentDate.value.year, currentDate.value.month - 1, 1);
+        await DateTime(currentDate.value.year, currentDate.value.month - 1, 1);
+    await attendenceController.attendenceList(
+        month: currentDate.value.month, year: currentDate.value.year);
   }
 
-  void nextMonth() {
+  void nextMonth() async {
     currentDate.value =
-        DateTime(currentDate.value.year, currentDate.value.month + 1, 1);
+        await DateTime(currentDate.value.year, currentDate.value.month + 1, 1);
+    await attendenceController.attendenceList(
+        month: currentDate.value.month, year: currentDate.value.year);
   }
 
   @override

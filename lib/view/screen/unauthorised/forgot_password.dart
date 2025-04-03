@@ -62,7 +62,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                               children: [
                                 SizedBox(height: 85.h),
                                 Text(
-                                  loginHere,
+                                  forgotPasswordTitle,
                                   style:
                                       changeTextColor(boldText, primaryColor),
                                 ),

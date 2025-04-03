@@ -1,11 +1,11 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:task_management/helper/storage_helper.dart';
 import 'package:task_management/model/attendence_list_model.dart';
 import 'package:task_management/model/attendence_user_details.dart';
+import 'package:task_management/model/leave_type_model.dart';
 import 'package:task_management/service/attendence/attendence_service.dart';
 
 class AttendenceController extends GetxController {
@@ -20,13 +20,16 @@ class AttendenceController extends GetxController {
       String latitude,
       String longitude,
       String attendenceTime,
-      String searchText) async {
+      String searchText,
+      File imageValue) async {
     isAttendencePunching.value = true;
     final result = await AttendenceService().attendencePunching(
-        pickedFile, address, latitude, longitude, attendenceTime, searchText);
+        imageValue, address, latitude, longitude, attendenceTime, searchText);
     if (result != null) {
       isPunchin.value = true;
+      isAttendencePunching.value = false;
       if (StorageHelper.getType() != 3) {
+        await attendenceUserDetailsApi(StorageHelper.getId().toString());
         DateTime dateTime = DateTime.now();
         String formattedDate =
             "checkin ${DateFormat('yyyy-MM-dd').format(dateTime)}";
@@ -47,13 +50,16 @@ class AttendenceController extends GetxController {
       String latitude,
       String longitude,
       String attendenceTime,
-      String searchText) async {
+      String searchText,
+      File imageValue) async {
     isAttendencePunchout.value = true;
     final result = await AttendenceService().attendencePunchout(
-        pickedFile, address, latitude, longitude, attendenceTime, searchText);
+        imageValue, address, latitude, longitude, attendenceTime, searchText);
     if (result != null) {
       isPunchin.value = false;
+      isAttendencePunchout.value = false;
       if (StorageHelper.getType() != 3) {
+        await attendenceUserDetailsApi(StorageHelper.getId().toString());
         DateTime dateTime = DateTime.now();
         String formattedDate =
             "checkout ${DateFormat('yyyy-MM-dd').format(dateTime)}";
@@ -65,11 +71,10 @@ class AttendenceController extends GetxController {
   }
 
   var attendenceListModel = Rxn<AttendenceListModel>();
-
   var isAttendenceListLoading = false.obs;
-  Future<void> attendenceList() async {
+  Future<void> attendenceList({required int month, required int year}) async {
     isAttendenceListLoading.value = true;
-    final result = await AttendenceService().attendenceList();
+    final result = await AttendenceService().attendenceList(month, year);
     if (result != null) {
       attendenceListModel.value = result;
       attendenceListModel.refresh();
@@ -91,5 +96,41 @@ class AttendenceController extends GetxController {
       attendenceUserDetails.value = result;
     } else {}
     isuserDetailsAttendenceListLoading.value = false;
+  }
+
+  var isLeaveTypeLoading = false.obs;
+  RxList<LeaveTypeData> leaveTypeList = <LeaveTypeData>[].obs;
+  // LeaveTypeData? selectedLeaveType;
+  var selectedLeaveType = Rxn<LeaveTypeData>();
+  Future<void> leaveTypeLoading() async {
+    isLeaveTypeLoading.value = true;
+    final result = await AttendenceService().leaveTypeList();
+    if (result != null) {
+      leaveTypeList.assignAll(result.data!);
+      isLeaveTypeLoading.value = false;
+    } else {}
+    isLeaveTypeLoading.value = false;
+  }
+
+  var isLeaveLoading = false.obs;
+  Future<void> leaveLoading() async {
+    isLeaveLoading.value = true;
+    final result = await AttendenceService().leaveList();
+    if (result != null) {
+      isLeaveLoading.value = false;
+    } else {}
+    isLeaveLoading.value = false;
+  }
+
+  var isApplyingLeave = false.obs;
+  Future<void> aplyingLeave(String startDate, String endDate, String duration,
+      String leaveType, String description) async {
+    isApplyingLeave.value = true;
+    final result = await AttendenceService()
+        .applyingLeave(startDate, endDate, duration, leaveType, description);
+    if (result != null) {
+      isApplyingLeave.value = false;
+    } else {}
+    isApplyingLeave.value = false;
   }
 }

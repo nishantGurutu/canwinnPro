@@ -31,7 +31,6 @@ import 'package:task_management/model/assets_submit_model.dart';
 import 'package:task_management/model/priority_model.dart';
 import 'package:task_management/model/responsible_person_list_model.dart';
 import 'package:task_management/view/screen/add_project.dart';
-import 'package:task_management/view/screen/attendence/checkin_screen.dart';
 import 'package:task_management/view/screen/bootom_bar.dart';
 import 'package:task_management/view/screen/task_list.dart';
 import 'package:task_management/view/screen/todo_list.dart';
@@ -65,14 +64,12 @@ class _HomeScreenState extends State<HomeScreen>
   final ProfileController profileController = Get.find();
   final TaskController taskController = Get.find();
   final BottomBarController bottomBarController = Get.find();
-
   RxList<AssetsSubmitModel> assetsList = <AssetsSubmitModel>[].obs;
   RxList<bool> assetsListCheckbox = <bool>[].obs;
   final FeedController feedController = Get.put(FeedController());
   final ChatController chatController = Get.put(ChatController());
   final PriorityController priorityController = Get.find();
   DateTime dt = DateTime.now();
-
   ScrollController _scrollController = ScrollController();
 
   @override

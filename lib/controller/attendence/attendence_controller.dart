@@ -133,8 +133,19 @@ class AttendenceController extends GetxController {
         .applyingLeave(startDate, endDate, duration, leaveType, description);
     if (result != null) {
       isApplyingLeave.value = false;
+      await leaveLoading();
       Get.back();
     } else {}
     isApplyingLeave.value = false;
+  }
+
+  var isApplyingLeaveDeleting = false.obs;
+  Future<void> leaveDeleting(int? id) async {
+    isApplyingLeaveDeleting.value = true;
+    final result = await AttendenceService().deleteLeave(id);
+    if (result != null) {
+      isApplyingLeaveDeleting.value = false;
+    } else {}
+    isApplyingLeaveDeleting.value = false;
   }
 }

@@ -8,6 +8,7 @@ import 'package:task_management/controller/attendence/attendence_controller.dart
 import 'package:task_management/custom_widget/button_widget.dart';
 import 'package:task_management/custom_widget/task_text_field.dart';
 import 'package:task_management/model/leave_type_model.dart';
+import 'package:task_management/view/widgets/customCalender2.dart';
 import 'package:task_management/view/widgets/custom_calender.dart';
 import 'package:task_management/view/widgets/custom_dropdawn.dart';
 
@@ -127,55 +128,125 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                               itemBuilder: (context, index) {
                                 return Padding(
                                   padding: EdgeInsets.symmetric(vertical: 5.h),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10.r)),
-                                        border:
-                                            Border.all(color: lightGreyColor)),
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 5.h, vertical: 5.w),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            '${attendenceController.leaveListData[index].userName}',
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500),
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10.r)),
+                                            border: Border.all(
+                                                color: lightGreyColor)),
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 5.h, vertical: 5.w),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                '${attendenceController.leaveListData[index].userName}',
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                              SizedBox(
+                                                height: 3.h,
+                                              ),
+                                              Text(
+                                                '${attendenceController.leaveListData[index].leavetypeName}',
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                              SizedBox(
+                                                height: 3.h,
+                                              ),
+                                              Text(
+                                                '${attendenceController.leaveListData[index].reason}',
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                              SizedBox(
+                                                height: 3.h,
+                                              ),
+                                              Text(
+                                                '${attendenceController.leaveListData[index].leaveDateRange}',
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                            ],
                                           ),
-                                          SizedBox(
-                                            height: 3.h,
-                                          ),
-                                          Text(
-                                            '${attendenceController.leaveListData[index].leavetypeName}',
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                          SizedBox(
-                                            height: 3.h,
-                                          ),
-                                          Text(
-                                            '${attendenceController.leaveListData[index].reason}',
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                          SizedBox(
-                                            height: 3.h,
-                                          ),
-                                          Text(
-                                            '${attendenceController.leaveListData[index].leaveDateRange}',
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        ],
+                                        ),
                                       ),
-                                    ),
+                                      Positioned(
+                                        top: 5.h,
+                                        right: 2.w,
+                                        child: SizedBox(
+                                          height: 20.h,
+                                          width: 30.w,
+                                          child: PopupMenuButton<String>(
+                                            color: whiteColor,
+                                            padding: const EdgeInsets.all(0),
+                                            icon: const Icon(Icons.more_vert),
+                                            onSelected: (String result) {
+                                              switch (result) {
+                                                case 'edit':
+                                                  showModalBottomSheet(
+                                                    context: context,
+                                                    isScrollControlled: true,
+                                                    builder: (context) =>
+                                                        Padding(
+                                                      padding: EdgeInsets.only(
+                                                          bottom: MediaQuery.of(
+                                                                  context)
+                                                              .viewInsets
+                                                              .bottom),
+                                                      // child: editBottomSheet(
+                                                      //     context,
+                                                      //     notesList[index].id,
+                                                      //     tagList),
+                                                    ),
+                                                  );
+                                                  break;
+                                                case 'delete':
+                                                  attendenceController
+                                                      .leaveDeleting(
+                                                    attendenceController
+                                                        .leaveListData[index]
+                                                        .id,
+                                                  );
+                                                  break;
+                                              }
+                                            },
+                                            itemBuilder:
+                                                (BuildContext context) =>
+                                                    <PopupMenuEntry<String>>[
+                                              const PopupMenuItem<String>(
+                                                value: 'edit',
+                                                child: ListTile(
+                                                  leading: Icon(Icons.edit),
+                                                  title: Text('Edit'),
+                                                ),
+                                              ),
+                                              const PopupMenuItem<String>(
+                                                value: 'delete',
+                                                child: ListTile(
+                                                  leading: Icon(Icons.delete),
+                                                  title: Text('Delete'),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    ],
                                   ),
                                 );
                               },
@@ -219,8 +290,8 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                     SizedBox(
                       height: 5.h,
                     ),
-                    CustomCalender(
-                      hintText: dateFormate,
+                    CustomCalender2(
+                      hintText: dateFormate2,
                       controller: leaveStartDateController,
                     ),
                     SizedBox(
@@ -234,8 +305,8 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                     SizedBox(
                       height: 5.h,
                     ),
-                    CustomCalender(
-                      hintText: dateFormate,
+                    CustomCalender2(
+                      hintText: dateFormate2,
                       controller: leaveEndDateController,
                     ),
                     SizedBox(

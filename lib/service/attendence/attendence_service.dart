@@ -257,4 +257,34 @@ class AttendenceService {
       return false;
     }
   }
+
+  Future<bool> deleteLeave(int? id) async {
+    try {
+      var token = StorageHelper.getToken();
+      _dio.options.headers = {
+        "Authorization": "Bearer $token",
+        "Content-Type": "multipart/form-data",
+      };
+      final Map<String, dynamic> formDataMap = {
+        'start_date': ''.toString(),
+      };
+
+      final formData = FormData.fromMap(formDataMap);
+      final response = await _dio.post(
+        ApiConstant.baseUrl + ApiConstant.apply_leave,
+        data: formData,
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        CustomToast().showCustomToast(response.data['message']);
+        return true;
+      } else {
+        CustomToast().showCustomToast(response.data['message']);
+        throw Exception('Failed notes list');
+      }
+    } catch (e) {
+      print('Error in Attendence punch: $e');
+      return false;
+    }
+  }
 }

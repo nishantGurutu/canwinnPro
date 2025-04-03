@@ -9,7 +9,6 @@ import 'package:task_management/custom_widget/button_widget.dart';
 import 'package:task_management/custom_widget/task_text_field.dart';
 import 'package:task_management/model/leave_type_model.dart';
 import 'package:task_management/view/widgets/customCalender2.dart';
-import 'package:task_management/view/widgets/custom_calender.dart';
 import 'package:task_management/view/widgets/custom_dropdawn.dart';
 
 class ApplyLeave extends StatefulWidget {
@@ -27,6 +26,14 @@ class _ApplyLeaveState extends State<ApplyLeave> {
   final TextEditingController leaveDurationController = TextEditingController();
   final TextEditingController leaveTypeController = TextEditingController();
   final TextEditingController leaveDescriptionController =
+      TextEditingController();
+  final TextEditingController leaveStartDateController2 =
+      TextEditingController();
+  final TextEditingController leaveEndDateController2 = TextEditingController();
+  final TextEditingController leaveDurationController2 =
+      TextEditingController();
+  final TextEditingController leaveTypeController2 = TextEditingController();
+  final TextEditingController leaveDescriptionController2 =
       TextEditingController();
   ValueNotifier<int?> focusedIndexNotifier = ValueNotifier<int?>(null);
 
@@ -195,10 +202,32 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                                             color: whiteColor,
                                             padding: const EdgeInsets.all(0),
                                             icon: const Icon(Icons.more_vert),
-                                            onSelected: (String result) {
+                                            onSelected: (String result) async {
                                               switch (result) {
                                                 case 'edit':
-                                                  showModalBottomSheet(
+                                                  leaveStartDateController2
+                                                          .text =
+                                                      attendenceController
+                                                          .leaveListData[index]
+                                                          .startDate
+                                                          .toString();
+                                                  leaveEndDateController2.text =
+                                                      attendenceController
+                                                          .leaveListData[index]
+                                                          .endDate
+                                                          .toString();
+                                                  leaveTypeController2.text =
+                                                      attendenceController
+                                                          .leaveListData[index]
+                                                          .leaveType
+                                                          .toString();
+                                                  leaveDescriptionController2
+                                                          .text =
+                                                      attendenceController
+                                                          .leaveListData[index]
+                                                          .reason
+                                                          .toString();
+                                                  await showModalBottomSheet(
                                                     context: context,
                                                     isScrollControlled: true,
                                                     builder: (context) =>
@@ -208,10 +237,13 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                                                                   context)
                                                               .viewInsets
                                                               .bottom),
-                                                      // child: editBottomSheet(
-                                                      //     context,
-                                                      //     notesList[index].id,
-                                                      //     tagList),
+                                                      child: leaveEditingBottomSheet(
+                                                          context,
+                                                          attendenceController
+                                                              .leaveListData[
+                                                                  index]
+                                                              .id
+                                                              .toString()),
                                                     ),
                                                   );
                                                   break;
@@ -367,6 +399,174 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                               leaveDurationController.text,
                               leaveTypeController.text,
                               leaveDescriptionController.text,
+                            );
+                          }
+                        },
+                        text: attendenceController.isApplyingLeave.value == true
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CircularProgressIndicator(
+                                    color: whiteColor,
+                                  ),
+                                  SizedBox(
+                                    width: 8.w,
+                                  ),
+                                  Text(
+                                    loading,
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        color: whiteColor),
+                                  ),
+                                ],
+                              )
+                            : Text(
+                                submit,
+                                style: TextStyle(
+                                  color: whiteColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                        width: double.infinity,
+                        color: primaryColor,
+                        height: 45.h,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 15.h,
+                    ),
+                  ],
+                ),
+                Positioned(
+                  right: 1,
+                  child: Container(
+                    width: 20.w,
+                    child: IconButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      icon: Icon(
+                        Icons.close,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget leaveEditingBottomSheet(BuildContext context, String leaveId) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(20.r)),
+      ),
+      width: double.infinity,
+      height: 420.h,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 15.w),
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Stack(
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 20.h),
+                    Text(
+                      'Leave Start Date',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    CustomCalender2(
+                      hintText: dateFormate2,
+                      controller: leaveStartDateController2,
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    Text(
+                      'Leave End Date',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    CustomCalender2(
+                      hintText: dateFormate2,
+                      controller: leaveEndDateController2,
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    Text(
+                      'Leave Type',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    CustomDropdown<LeaveTypeData>(
+                      items: attendenceController.leaveTypeList,
+                      itemLabel: (item) => item.name ?? "",
+                      selectedValue: null,
+                      onChanged: (value) {
+                        attendenceController.selectedLeaveType.value = value;
+                        leaveTypeController2.text =
+                            (attendenceController.selectedLeaveType.value?.id ??
+                                    "")
+                                .toString();
+                      },
+                      hintText: selectPriority,
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    Text(
+                      'Leave Description',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    TaskCustomTextField(
+                      controller: leaveDescriptionController2,
+                      textCapitalization: TextCapitalization.sentences,
+                      data: taskName,
+                      hintText: enterLeaveDescription,
+                      labelText: enterLeaveDescription,
+                      index: 4,
+                      focusedIndexNotifier: focusedIndexNotifier,
+                    ),
+                    SizedBox(
+                      height: 15.h,
+                    ),
+                    Obx(
+                      () => CustomButton(
+                        onPressed: () async {
+                          if (attendenceController.isApplyingLeave.value ==
+                              false) {
+                            await attendenceController.leaveEditing(
+                              leaveStartDateController2.text,
+                              leaveEndDateController2.text,
+                              leaveDurationController2.text,
+                              leaveTypeController2.text,
+                              leaveDescriptionController2.text,
+                              leaveId,
                             );
                           }
                         },

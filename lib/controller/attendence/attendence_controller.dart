@@ -101,7 +101,6 @@ class AttendenceController extends GetxController {
 
   var isLeaveTypeLoading = false.obs;
   RxList<LeaveTypeData> leaveTypeList = <LeaveTypeData>[].obs;
-  // LeaveTypeData? selectedLeaveType;
   var selectedLeaveType = Rxn<LeaveTypeData>();
   Future<void> leaveTypeLoading() async {
     isLeaveTypeLoading.value = true;
@@ -139,12 +138,27 @@ class AttendenceController extends GetxController {
     isApplyingLeave.value = false;
   }
 
+  var isLeaveEditing = false.obs;
+  Future<void> leaveEditing(String startDate, String endDate, String duration,
+      String leaveType, String description, String id) async {
+    isLeaveEditing.value = true;
+    final result = await AttendenceService()
+        .leaveEditing(startDate, endDate, duration, leaveType, description, id);
+    if (result != null) {
+      isLeaveEditing.value = false;
+      await leaveLoading();
+      Get.back();
+    } else {}
+    isLeaveEditing.value = false;
+  }
+
   var isApplyingLeaveDeleting = false.obs;
   Future<void> leaveDeleting(int? id) async {
     isApplyingLeaveDeleting.value = true;
     final result = await AttendenceService().deleteLeave(id);
     if (result != null) {
       isApplyingLeaveDeleting.value = false;
+      await leaveLoading();
     } else {}
     isApplyingLeaveDeleting.value = false;
   }

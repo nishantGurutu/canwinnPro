@@ -153,4 +153,6 @@ class ApiConstant {
   static const String leavetype_list = "leavetype-list";
   static const String apply_leave = "apply-leave";
   static const String leave_list = "leave-list";
+  static const String delete_leave = "delete-leave";
+  static const String edit_leave = "edit-leave";
 }

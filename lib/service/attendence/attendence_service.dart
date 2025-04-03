@@ -258,6 +258,50 @@ class AttendenceService {
     }
   }
 
+  Future<bool> leaveEditing(String startDate, String endDate, String duration,
+      String leaveType, String description, String id) async {
+    try {
+      var token = StorageHelper.getToken();
+      _dio.options.headers = {
+        "Authorization": "Bearer $token",
+        "Content-Type": "multipart/form-data",
+      };
+      print('edit data value $startDate');
+      print('edit data value 2 $endDate');
+      print('edit data value 3 $duration');
+      print('edit data value 4 $leaveType');
+      print('edit data value 5 $description');
+      print('edit data value 6 $id');
+      final Map<String, dynamic> formDataMap = {
+        'start_date': startDate.toString(),
+        'end_date': endDate.toString(),
+        'reason': description.toString(),
+        'leave_type': leaveType.toString(),
+        'id': id,
+      };
+
+      final formData = FormData.fromMap(formDataMap);
+      final response = await _dio.post(
+        ApiConstant.baseUrl + ApiConstant.edit_leave,
+        data: formData,
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        CustomToast().showCustomToast(response.data['message']);
+        return true;
+      } else if (response.statusCode == 403 || response.statusCode == 404) {
+        CustomToast().showCustomToast(response.data['message']);
+        return true;
+      } else {
+        CustomToast().showCustomToast(response.data['message']);
+        throw Exception('Failed notes list');
+      }
+    } catch (e) {
+      print('Error in Attendence punch: $e');
+      return false;
+    }
+  }
+
   Future<bool> deleteLeave(int? id) async {
     try {
       var token = StorageHelper.getToken();
@@ -265,14 +309,9 @@ class AttendenceService {
         "Authorization": "Bearer $token",
         "Content-Type": "multipart/form-data",
       };
-      final Map<String, dynamic> formDataMap = {
-        'start_date': ''.toString(),
-      };
 
-      final formData = FormData.fromMap(formDataMap);
-      final response = await _dio.post(
-        ApiConstant.baseUrl + ApiConstant.apply_leave,
-        data: formData,
+      final response = await _dio.delete(
+        "${ApiConstant.baseUrl + ApiConstant.delete_leave}/$id",
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {

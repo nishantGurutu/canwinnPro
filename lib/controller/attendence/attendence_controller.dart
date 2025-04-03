@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:task_management/helper/storage_helper.dart';
 import 'package:task_management/model/attendence_list_model.dart';
 import 'package:task_management/model/attendence_user_details.dart';
+import 'package:task_management/model/leave_list_model.dart';
 import 'package:task_management/model/leave_type_model.dart';
 import 'package:task_management/service/attendence/attendence_service.dart';
 
@@ -113,10 +114,12 @@ class AttendenceController extends GetxController {
   }
 
   var isLeaveLoading = false.obs;
+  RxList<LeaveListData> leaveListData = <LeaveListData>[].obs;
   Future<void> leaveLoading() async {
     isLeaveLoading.value = true;
     final result = await AttendenceService().leaveList();
     if (result != null) {
+      leaveListData.assignAll(result.data!);
       isLeaveLoading.value = false;
     } else {}
     isLeaveLoading.value = false;
@@ -130,6 +133,7 @@ class AttendenceController extends GetxController {
         .applyingLeave(startDate, endDate, duration, leaveType, description);
     if (result != null) {
       isApplyingLeave.value = false;
+      Get.back();
     } else {}
     isApplyingLeave.value = false;
   }

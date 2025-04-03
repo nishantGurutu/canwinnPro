@@ -32,6 +32,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
   @override
   void initState() {
     attendenceController.leaveTypeLoading();
+    attendenceController.leaveLoading();
     super.initState();
   }
 
@@ -61,59 +62,127 @@ class _ApplyLeaveState extends State<ApplyLeave> {
       backgroundColor: whiteColor,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 12.w),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                InkWell(
-                  onTap: () async {
-                    await showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      builder: (context) => Padding(
-                        padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).viewInsets.bottom),
-                        child: applyLeaveBottomSheet(
-                          context,
+        child: Obx(
+          () => attendenceController.isLeaveLoading.value == true &&
+                  attendenceController.isLeaveTypeLoading.value == true
+              ? Center(child: CircularProgressIndicator())
+              : Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        InkWell(
+                          onTap: () async {
+                            await showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              builder: (context) => Padding(
+                                padding: EdgeInsets.only(
+                                    bottom: MediaQuery.of(context)
+                                        .viewInsets
+                                        .bottom),
+                                child: applyLeaveBottomSheet(
+                                  context,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: secondaryColor),
+                              color: whiteColor,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.r),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 5.w, vertical: 5.h),
+                              child: Text(
+                                'Apply Leave',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                  color: secondaryColor,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: secondaryColor),
-                      color: whiteColor,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10.r),
-                      ),
+                      ],
                     ),
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
-                      child: Text(
-                        'Apply Leave',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          color: secondaryColor,
-                        ),
-                      ),
+                    SizedBox(height: 5.h),
+                    Expanded(
+                      child: attendenceController.leaveListData.isEmpty
+                          ? Center(
+                              child: Text(
+                                'No leave data',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w500),
+                              ),
+                            )
+                          : ListView.builder(
+                              itemCount:
+                                  attendenceController.leaveListData.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 5.h),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10.r)),
+                                        border:
+                                            Border.all(color: lightGreyColor)),
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 5.h, vertical: 5.w),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '${attendenceController.leaveListData[index].userName}',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          SizedBox(
+                                            height: 3.h,
+                                          ),
+                                          Text(
+                                            '${attendenceController.leaveListData[index].leavetypeName}',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                          SizedBox(
+                                            height: 3.h,
+                                          ),
+                                          Text(
+                                            '${attendenceController.leaveListData[index].reason}',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                          SizedBox(
+                                            height: 3.h,
+                                          ),
+                                          Text(
+                                            '${attendenceController.leaveListData[index].leaveDateRange}',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-            SizedBox(height: 5.h),
-            // Expanded(
-            //   child: ListView.builder(
-            //     itemCount: 3,
-            //     itemBuilder: (context, index) {
-            //       return Container();
-            //     },
-            //   ),
-            // ),
-          ],
         ),
       ),
     );
@@ -186,6 +255,10 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                       selectedValue: null,
                       onChanged: (value) {
                         attendenceController.selectedLeaveType.value = value;
+                        leaveTypeController.text =
+                            (attendenceController.selectedLeaveType.value?.id ??
+                                    "")
+                                .toString();
                       },
                       hintText: selectPriority,
                     ),

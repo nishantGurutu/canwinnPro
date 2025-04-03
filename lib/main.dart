@@ -25,6 +25,8 @@ import 'package:task_management/view/screen/task_list.dart';
 import 'package:task_management/view/screen/todo_list.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 
+import 'component/location_service.dart';
+
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
@@ -76,7 +78,7 @@ Future<void> main() async {
   await StorageHelper.initialize();
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
+  LocationService.initialize();
   await EasyLocalization.ensureInitialized();
 
   LocalNotificationService.initialize();

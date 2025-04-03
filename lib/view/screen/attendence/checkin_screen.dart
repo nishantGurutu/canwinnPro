@@ -18,6 +18,7 @@ import 'package:task_management/helper/storage_helper.dart';
 import 'package:task_management/view/screen/attendence/apply_leave.dart';
 import 'package:task_management/view/screen/attendence/attendence_screen.dart';
 import 'package:task_management/view/screen/attendence/widget/camera_view.dart';
+import 'package:geocoding/geocoding.dart' as geocode;
 
 class CheckinScreen extends StatefulWidget {
   const CheckinScreen({super.key});
@@ -68,7 +69,9 @@ class _CheckinScreenState extends State<CheckinScreen> {
     latitude = (LocationService.locationData.latitude ?? 0.0).toString();
     longitude = (LocationService.locationData.longitude ?? 0.0).toString();
     attendenceTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
-    String? address = await LocationService.getCurrentAddress();
+
+    String? address =
+        "${LocationHandler.place?.locality}, ${LocationHandler.place?.country}";
     StorageHelper.setUserLocationName(address ?? '');
     locaitonAddress = address ?? "Could not fetch address";
     isAddressLoading.value = false;

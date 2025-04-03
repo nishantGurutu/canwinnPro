@@ -5,6 +5,7 @@ import 'package:task_management/constant/custom_toast.dart';
 import 'package:task_management/helper/storage_helper.dart';
 import 'package:task_management/model/attendence_list_model.dart';
 import 'package:task_management/model/attendence_user_details.dart';
+import 'package:task_management/model/leave_list_model.dart';
 import 'package:task_management/model/leave_type_model.dart';
 
 class AttendenceService {
@@ -146,7 +147,7 @@ class AttendenceService {
     }
   }
 
-  Future<AttendenceListModel?> leaveList() async {
+  Future<LeaveListModel?> leaveList() async {
     try {
       var token = StorageHelper.getToken();
       _dio.options.headers = {
@@ -159,7 +160,7 @@ class AttendenceService {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return AttendenceListModel.fromJson(response.data);
+        return LeaveListModel.fromJson(response.data);
       } else {
         CustomToast().showCustomToast(response.data['message']);
         throw Exception('Failed notes list');
@@ -239,7 +240,7 @@ class AttendenceService {
       };
 
       final formData = FormData.fromMap(formDataMap);
-      final response = await _dio.get(
+      final response = await _dio.post(
         ApiConstant.baseUrl + ApiConstant.apply_leave,
         data: formData,
       );

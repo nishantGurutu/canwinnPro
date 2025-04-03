@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:task_management/component/location_handler.dart';
 import 'package:task_management/constant/color_constant.dart';
 import 'package:task_management/controller/bottom_bar_navigation_controller.dart';
 import 'package:task_management/controller/chat_controller.dart';
@@ -77,6 +78,7 @@ class _BottomNavigationBarExampleState
     super.initState();
 
     userPageControlelr.roleListApi(StorageHelper.getDepartmentId());
+    LocationHandler.determinePosition(context);
   }
 
   String nameStr = "";
@@ -255,7 +257,7 @@ class _BottomNavigationBarExampleState
                           bottom: 15.h,
                           left: 12.w,
                           child: InkWell(
-                            onTap: () {
+                            onTap: () async {
                               Get.to(() => CheckinScreen());
                             },
                             child: Container(

@@ -12,7 +12,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.canwinn.pro"
+    namespace = "com.task.schotest"
     compileSdk = 35 //flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -28,8 +28,8 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        // applicationId = "com.canwinn.pro"
-        applicationId = "com.canwinn.pro"
+        // applicationId = "com.task.schotest"
+        applicationId = "com.task.schotest"
         minSdk = 21 //flutter.minSdkVersion
         targetSdk = 34
         versionCode = flutter.versionCode

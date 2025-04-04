@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,7 +8,6 @@ import 'package:intl/intl.dart';
 import 'package:task_management/component/location_handler.dart';
 import 'package:task_management/component/location_service.dart';
 import 'package:task_management/constant/color_constant.dart';
-import 'package:task_management/constant/custom_toast.dart';
 import 'package:task_management/constant/text_constant.dart';
 import 'package:task_management/controller/attendence/attendence_controller.dart';
 import 'package:task_management/controller/attendence/checkin_user_details.dart';
@@ -18,7 +16,6 @@ import 'package:task_management/helper/storage_helper.dart';
 import 'package:task_management/view/screen/attendence/apply_leave.dart';
 import 'package:task_management/view/screen/attendence/attendence_screen.dart';
 import 'package:task_management/view/screen/attendence/widget/camera_view.dart';
-import 'package:geocoding/geocoding.dart' as geocode;
 
 class CheckinScreen extends StatefulWidget {
   const CheckinScreen({super.key});
@@ -399,28 +396,28 @@ class _CheckinScreenState extends State<CheckinScreen> {
                                       'location lat long data ${latitude}, ${longitude}, ${locaitonAddress}');
                                   if (!attendenceController
                                       .isAttendencePunching.value) {
-                                    if (isWithinRange(
-                                        double.parse(latitude),
-                                        double.parse(longitude),
-                                        28.4973874,
-                                        77.0210997,
-                                        500)) {
-                                      await availableCameras().then(
-                                        (value) => Get.to(
-                                          () => CameraView(
-                                            cameras: value,
-                                            type: "checkin",
-                                            latitude: latitude,
-                                            longitude: longitude,
-                                            attendenceTime: attendenceTime,
-                                            address: locaitonAddress ?? "",
-                                          ),
+                                    // if (isWithinRange(
+                                    //     double.parse(latitude),
+                                    //     double.parse(longitude),
+                                    //     28.4973874,
+                                    //     77.0210997,
+                                    //     500)) {
+                                    await availableCameras().then(
+                                      (value) => Get.to(
+                                        () => CameraView(
+                                          cameras: value,
+                                          type: "checkin",
+                                          latitude: latitude,
+                                          longitude: longitude,
+                                          attendenceTime: attendenceTime,
+                                          address: locaitonAddress ?? "",
                                         ),
-                                      );
-                                    } else {
-                                      CustomToast().showCustomToast(
-                                          'You are out of office area.');
-                                    }
+                                      ),
+                                    );
+                                    // } else {
+                                    //   CustomToast().showCustomToast(
+                                    //       'You are out of office area.');
+                                    // }
                                   }
                                 },
                                 child: Container(

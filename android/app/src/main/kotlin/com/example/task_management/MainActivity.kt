@@ -1,4 +1,4 @@
-package com.canwinn.pro
+package com.task.schotest
 
 import io.flutter.embedding.android.FlutterActivity
 

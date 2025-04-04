@@ -1,7 +1,6 @@
 class ApiConstant {
-  static const String baseUrl =
-      // "https://mcg.electionmaster.in/public/api/";
-      "https://taskmaster.electionmaster.in/public/api/";
+  static const String baseUrl = "https://mcg.electionmaster.in/public/api/";
+  // "https://taskmaster.electionmaster.in/public/api/";
   static const String register = "auth/register";
   static const String login = "auth/login";
   static const String logout = "logout";
